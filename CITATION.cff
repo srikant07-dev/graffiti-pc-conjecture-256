@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: Please cite this repository when referring to the formal disproof.
+title: "Graffiti.pc Conjecture 256: Counterexamples and a Sharp Total Domination Bound"
+type: software
+authors:
+  - name: Graffiti.pc Conjecture 256 repository contributors
+repository-code: https://github.com/srikant07-dev/graffiti-pc-conjecture-256
+license: MIT

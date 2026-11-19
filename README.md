@@ -12,6 +12,8 @@ Take a three-vertex path. Attach one triangle at the middle vertex and three at 
 
 ## Files
 
+See the [complete file index](CONTENTS.md), [verification guide](docs/verification.md), and [result summary](results/conjecture-256.md).
+
 | File | Contents |
 | --- | --- |
 | [Research paper (PDF)](paper.pdf) | Statement, counterexample family, and sharp coefficient theorem |
@@ -38,5 +40,9 @@ pdflatex -interaction=nonstopmode -halt-on-error paper.tex
 ~~~
 
 ## Research status
+
+Cinna Davis’s [solved-conjectures repository](https://github.com/1337isnot1337/solved-conjectures) inspired the AI-assisted proof project and the way this repository presents its results and verification.
+
+Citation metadata is available in [CITATION.cff](CITATION.cff). Repository materials are available under the [MIT License](LICENSE). The [project history](HISTORY.md) records changes to the proof package.
 
 DeLaVina’s November 2026 catalogue lists the conjecture as open. The [research notes](graffiti-pc-conjecture-256.md#prior-resolution-check) document the sources checked for earlier resolutions and the limits of that search. The manuscript records the use of AI assistance.
