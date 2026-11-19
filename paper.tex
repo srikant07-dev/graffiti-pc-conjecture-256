@@ -1,0 +1,147 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\gt}{\gamma_t}
+
+\title{Counterexamples to Graffiti.pc Conjecture 256\\
+and a sharp total domination bound}
+\author{}
+\date{19 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Graffiti.pc Conjecture 256 relates the total domination number of a
+connected graph to the open neighborhood of its minimum-degree vertices
+and the largest open neighborhood of an edge. A star with triangles
+attached at its vertices gives an infinite family of counterexamples.
+The same family shows that the conjectured coefficient \(2\) has optimal
+replacement \(1\). A companion Lean~4 file verifies a 17-vertex
+counterexample to the universal conjecture.
+\end{abstract}
+
+\section{Statement}
+
+Let \(G=(V,E)\) be a finite simple connected graph with \(|V|\ge2\).
+Write \(N(v)\) for the open neighborhood of \(v\), put
+\(N(S)=\bigcup_{v\in S}N(v)\), and let \(A\) be the set of vertices of
+minimum degree. Define
+\[
+M(G)=\max_{uv\in E}|N(u)\cup N(v)|.
+\]
+The number \(\gt(G)\) is the least size of a set \(D\subseteq V\)
+such that \(N(D)=V\). In particular, vertices in \(D\) also require
+a neighbor in \(D\).
+Conjecture 256 in DeLaVina's \emph{Written on the Wall II}~\cite[pp.~148--149]{wow}
+asserts that
+\begin{equation}\label{eq:conjecture}
+\gt(G)\ge \frac{2|N(A)|}{M(G)}.
+\end{equation}
+Under the catalogue's neighborhood convention, a member of \(A\)
+belongs to \(N(A)\) whenever it has a neighbor in \(A\).
+
+\section{Counterexamples}
+
+For integers \(k\ge2\) and \(r\ge1\), start with a star with center \(c\)
+and leaves \(x_1,\dots,x_k\). Attach one triangle at \(c\) and \(r\)
+triangles at each \(x_i\). To attach a triangle at \(v\), add two fresh
+vertices \(a,b\) and edges \(va,vb,ab\). Call the resulting graph \(G_{k,r}\).
+
+\begin{theorem}\label{thm:family}
+For \(G=G_{k,r}\),
+\[
+\gt(G)=k+1,\qquad |N(A)|=k(2r+1)+3,\qquad M(G)=2r+k+3.
+\]
+Consequently, \(G_{k,r}\) violates \eqref{eq:conjecture} exactly when
+\(2r>k+3\).
+\end{theorem}
+
+\begin{proof}
+The original star has no isolated vertices, and each new vertex is
+adjacent to its attachment vertex. Thus the original star vertices
+together totally dominate \(G\). Partition \(V\) into \(k+1\) groups
+by putting each original vertex together with all the new vertices
+attached to it. Every group contains a new vertex whose two neighbors
+lie in that group. Therefore every total dominating set meets every
+group, proving \(\gt(G)=k+1\).
+
+The original center has degree \(k+2\), each original leaf has degree
+\(2r+1\), and every new vertex has degree two. Thus \(A\) consists
+exactly of the new vertices. Each original vertex has a new neighbor,
+and each new vertex is adjacent to its triangle partner. Hence
+\(N(A)=V\), whose size is \(k+1+2+2kr=k(2r+1)+3\).
+
+On an original edge \(cx_i\), the neighborhoods of the two endpoints
+are disjoint, so their union has size \((k+2)+(2r+1)\).
+On an edge of an attached triangle the endpoints have exactly one
+common neighbor, the third vertex of the triangle. The possible union
+sizes for those edges are \(k+3\), \(2r+2\), and \(3\), all smaller
+than \(2r+k+3\). This gives the claimed value of \(M(G)\).
+Finally,
+\[
+2|N(A)|-\gt(G)M(G)=(k-1)(2r-k-3).
+\]
+Since \(k\ge2\) and \(M(G)>0\), the sign gives the stated criterion.
+\end{proof}
+
+\section{The optimal coefficient}
+
+\begin{corollary}
+The largest real \(\lambda\) for which
+\(\gt(G)\ge \lambda|N(A)|/M(G)\) holds for every graph in the conjecture
+is \(1\).
+\end{corollary}
+
+\begin{proof}
+For every vertex \(u\), choose a neighbor \(v\). Then
+\(|N(u)|\le |N(u)\cup N(v)|\le M(G)\). The neighborhoods of a minimum
+total dominating set cover \(V\), so
+\[
+|N(A)|\le |V|\le \gt(G)M(G).
+\]
+Thus \(\lambda=1\) is valid.
+To prove optimality, take \(r=k^2\) in Theorem~\ref{thm:family}.
+The resulting ratios satisfy
+\[
+\frac{\gt(G_{k,k^2})M(G_{k,k^2})}{|N(A)|}
+=\frac{(k+1)(2k^2+k+3)}{k(2k^2+1)+3}
+\longrightarrow 1
+\qquad(k\to\infty).
+\]
+Any \(\lambda>1\) therefore fails for sufficiently large \(k\).
+\end{proof}
+
+\section{Lean verification}
+
+The companion file \texttt{Graffiti256.lean} gives the theorem
+\texttt{Graffiti256.conjecture256\_false}. It encodes \(G_{2,3}\) on
+\(\mathrm{Fin}\,17\), with original vertices numbered \(0,1,2\) and
+center \(1\). Lean verifies the graph is simple and connected, verifies
+that \(\{0,1,2\}\) totally dominates it, and checks
+\(|N(A)|=17\) and \(M(G)=11\). The conjectured bound would imply
+\(34\le 3\cdot11=33\) for this set, since any total dominating set
+has size at least \(\gt(G)\). The formal result is the disproof of the
+universal statement. The family and the optimal coefficient are
+established by the mathematical arguments above.
+
+\paragraph{Provenance.}
+The catalogue snapshot updated on 5 November 2026 labels entry 256
+open. The companion research notes record the search for earlier
+resolutions and its limitations. AI assistance was used to develop
+the argument, draft the manuscript, and write and check the Lean file.
+
+\begin{thebibliography}{1}
+\bibitem{wow}
+E.~DeLaVina, \emph{Written on the Wall II: Conjectures of Graffiti.pc},
+University of Houston--Downtown, catalogue snapshot printed
+6 November 2026, pp.~148--149.
+\href{https://www.uhd.edu/academics/sciences/mathematics-statistics/wowii/files/wowiiaii.pdf#page=149}{Catalogue, Conjecture 256}.
+\end{thebibliography}
+
+\end{document}
